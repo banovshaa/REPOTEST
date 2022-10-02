@@ -26,9 +26,7 @@ namespace Lahiye
                 }
                 switch (answerNum1)
                 {
-                    case 1:
-                        do
-                        {
+                    case 1:                    
                             Console.WriteLine("Departamentlerle bagli etmek istediyiniz emeliyyata uygun reqemi secin:");
                             Console.WriteLine("1. Departamentlerin siyahisini gormek");
                             Console.WriteLine("2. Departament yaratmaq");
@@ -51,13 +49,10 @@ namespace Lahiye
                                 case 3:
                                     EditDepartment(ref humanResourceManager);
                                     break;
-                            }
-                        }
-                        while (true);
+                            }                     
                         break;
                     case 2:
-                        do
-                        {
+                        
                             Console.WriteLine("Iscilerle bagli etmek istediyiniz emeliyyata uygun reqemi secin:");
                             Console.WriteLine("1. Butun iscilerin siyahisini gormek");
                             Console.WriteLine("2. Departamentdeki iscilerin siyahisini gormek");
@@ -89,13 +84,11 @@ namespace Lahiye
                                     RemoveEmployee(ref humanResourceManager);
                                     break;
                             }
-
-                        } while (true);
-
                         break;
                 }
 
             } while (true);
+            
         }
         static void Departments(IHumanResourceManager humanResourceManager)
         {
@@ -185,68 +178,66 @@ namespace Lahiye
                 departmentName = Console.ReadLine();
                 departmentName = departmentName.ToUpper();
             }
-           /*Bele yazanda ad duz teyin ede bilmir
-             Console.WriteLine("Elave etmek istediyiniz iscinin adini daxil edin:");
-            string name = Console.ReadLine();
-            while (name.Length<2)
-             {
-                 Console.WriteLine("Duzgun ad daxil edin. Minimum 2 herf olmalidir:");
-                 name = Console.ReadLine();
-             }
-             Console.WriteLine("Elave etmek istediyiniz iscinin soyadini daxil edin:");
-             string surname = Console.ReadLine();
-             while (surname.Length < 2)
-             {
-                 Console.WriteLine("Duzgun soyad daxil edin. Minimum 2 herf olmalidir:");
-                 surname = Console.ReadLine();
-             }
-
-              bele yazanda ad yazan kimi proses diyanr*/
-           Console.WriteLine("Elave etmek istediyiniz iscinin adini daxil edin:");
+            Console.WriteLine("Elave etmek istediyiniz iscinin adini daxil edin:");
             string name = Console.ReadLine();
             while (true)
-              {
-                  if (name.Length >= 2)
-                  {
-                      bool letterCheck = false;
-                      foreach (char item in name)
-                      {
-                          if (char.IsLetter(item))
-                          {
-                              letterCheck = true;
-                              return;
-                          }
-                      }
-                      Console.WriteLine("Duzgun isci adi daxil edin. Isci adi yalniz herflerden ibaret olmalidir:");
-                      name = Console.ReadLine();
-                      continue;
-                  }
-                  Console.WriteLine("Duzgun ad daxil edin. Minimum 2 herf olmalidir:");
-                  name = Console.ReadLine();
-
-              }
-              Console.WriteLine("Elave etmek istediyiniz iscinin soyadini daxil edin:");
-              string surname = Console.ReadLine();
-              while (true)
-              {
-                  if (surname.Length >= 2)
-                  {
-                      bool letterCheck = false;
-                      foreach (char item in surname)
-                      {
-                          if (char.IsLetter(item))
-                          {
-                              letterCheck = true;
-                              return;
-                          }
-                      }
-                      Console.WriteLine("Duzgun isci soyadi daxil edin. Isci soyadi yalniz herflerden ibaret olmalidir:");
-                      surname = Console.ReadLine();
-                      continue;
-                  }
-                  Console.WriteLine("Duzgun soyad daxil edin. Minimum 2 herf olmalidir:");
-                  surname = Console.ReadLine();
-              }
+            {
+                if (name.Length >= 2)
+                {
+                    bool letterCheck = false;
+                    foreach (char item in name)
+                    {
+                        if (!char.IsLetter(item))
+                        {
+                            letterCheck = true;
+                            break;
+                        }
+                    }
+                    if (letterCheck == true)
+                    {
+                        Console.WriteLine("Duzgun isci adi daxil edin. Isci adi yalniz herflerden ibaret olmalidir:");
+                        name = Console.ReadLine();
+                        continue;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Duzgun ad daxil edin. Minimum 2 herf olmalidir:");
+                    name = Console.ReadLine();
+                    continue;
+                }
+                break;
+            }
+            Console.WriteLine("Elave etmek istediyiniz iscinin soyadini daxil edin:");
+            string surname = Console.ReadLine();
+            while (true)
+            {
+                if (surname.Length >= 2)
+                {
+                    bool letterCheck = false;
+                    foreach (char item in surname)
+                    {
+                        if (!char.IsLetter(item))
+                        {
+                            letterCheck = true;
+                            break;
+                        }
+                    }
+                    if (letterCheck == true)
+                    {
+                        Console.WriteLine("Duzgun isci soyadi daxil edin. Isci soyadi yalniz herflerden ibaret olmalidir:");
+                        surname = Console.ReadLine();
+                        continue;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Duzgun soyad daxil edin. Minimum 2 herf olmalidir:");
+                    surname = Console.ReadLine();
+                    continue;
+                }
+                break;
+            }
             name = name.Replace(name[0], char.ToUpper(name[0]));
             surname = surname.Replace(surname[0], char.ToUpper(surname[0]));
             StringBuilder fullName = new StringBuilder(name);
@@ -276,29 +267,34 @@ namespace Lahiye
         {
             Console.WriteLine("Isci duzelis etmek istediyiniz departamentin adini daxil edin:");
             Departments(humanResourceManager);
-            string departmentName = Console.ReadLine();
-            while (!humanResourceManager.CheckDepartmentsByName(departmentName))
+            while (true)
             {
-                Console.WriteLine("Daxil olunnan adda department movcud deyil. Yeniden daxil edin:");
-                departmentName = Console.ReadLine();
-
-            }
-            foreach (Department department in humanResourceManager.Departments)
-            {
-                if (departmentName==department.Name)
+                string departmentName = Console.ReadLine();
+                bool check = false;
+                while (!humanResourceManager.CheckDepartmentsByName(departmentName))
                 {
-                    foreach (Employee employee in department.Employees)
+                    Console.WriteLine("Daxil olunnan adda department movcud deyil. Yeniden daxil edin:");
+                    departmentName = Console.ReadLine();
+
+                }
+                foreach (Department department in humanResourceManager.Departments)
+                {
+                    if (departmentName == department.Name)
                     {
-                        if (department.Employees.Length<0)
+                        if (department.Employees.Length <= 0)
                         {
                             Console.WriteLine("Ilk once isci elave edin");
                             return;
                         }
+                        check = true;
+                        break;
                     }
+                }
+                if (check) 
+                {
+                    break;
 
                 }
-                Console.WriteLine("Duzgun departament adi daxil edin:");
-                departmentName = Console.ReadLine();
             }
             Console.WriteLine("Deyisiklik etmek istediyiniz iscinin ID nomresini daxil edin:");
             string no = Console.ReadLine();
@@ -334,7 +330,7 @@ namespace Lahiye
                         }
                         humanResourceManager.EditEmployee(employee.DepartmentName, employee.No, employee.Fullname, newSalary, newPosition);
                         Console.WriteLine("Yeni deyerler:");
-                        Console.WriteLine($"Fullname:{employee.Fullname} Salary{newSalary} Position{newPosition}");
+                        Console.WriteLine($"Fullname:{employee.Fullname} Salary: {newSalary} Position: {newPosition}");
                         return;
                     }
                     
@@ -419,8 +415,8 @@ namespace Lahiye
                     }
 
                 }
-               // Console.WriteLine("Duzgun departament adi daxil edin:");
-                //departmentName = Console.ReadLine();     
+                Console.WriteLine("Duzgun departament adi daxil edin:");
+                departmentName = Console.ReadLine();     
             }
             foreach (Department departments in humanResourceManager.Departments)
             {

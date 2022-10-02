@@ -15,7 +15,7 @@ namespace Lahiye.Services
         public HumanResourceManager()
         {
             _department = new Department[5];
-            Department FINANCE = new Department("FINANCE", 2, 800);
+            Department FINANCE = new Department("FINANCE", 20, 8000);
             Department SALES = new Department("SALES", 25, 15000);
             Department MARKETING = new Department("MARKETING", 30, 30000);
             Department MANAGEMENT = new Department("MANAGEMENT", 10, 85000);
@@ -41,40 +41,23 @@ namespace Lahiye.Services
                 if (department.Name == oldDepartmentName.ToUpper())
                 {
                     department.Name = newDepartmentName.ToUpper();
-
-                }
-                foreach (Employee employees in department.Employees)
-                {
-                    if (employees.DepartmentName.ToUpper()==department.Name.ToUpper())
-                    {
-                        foreach (Employee employee in department.Employees)
-                        {
-                            employee.No = employee.No.Replace(employee.No[0],newDepartmentName[0]);
-                            employee.No = employee.No.Replace(employee.No[1], newDepartmentName[1]);
-                            employee.No = employee.No.ToUpper();
-                        }
-                    }
-                    Console.WriteLine("Duzgun department adi daxil edilmeyib");
                 }
             }
         }
         public void AddEmployee(string departmentName, string fullname, string position, double salary)
         {
-            //if-lerin else ile problem var (mence)
             foreach (Department department in _department)
             {
                 if (departmentName == department.Name)
-                {
-                    foreach (Employee employee in department.Employees)
-                    {
-                        if (department.WorkerLimit > department.Employees.Length && employee.Salary <= (department.SalaryLimit - (department.CalcSalaryAverage() * department.Employees.Length)))
+                {                  
+                        if (department.WorkerLimit > department.Employees.Length && salary <= (department.SalaryLimit - (department.CalcSalaryAverage() * department.Employees.Length)))
                         {
                             Employee _employee = new Employee(fullname, position, departmentName, salary);
                             Array.Resize(ref department.Employees, department.Employees.Length + 1);
                             department.Employees[department.Employees.Length - 1] = _employee;
                         }
-                    }
-                }               
+                
+                }
 
             }
         }
@@ -84,14 +67,27 @@ namespace Lahiye.Services
             {
                 if (departmentName == department.Name)
                 {
-                    foreach (Employee employee in department.Employees)
+                    if (department.Employees.Length > 0)
                     {
-                        if (department.Employees.Length > 0 && department.SalaryLimit >= newSalary + (department.CalcSalaryAverage() * department.Employees.Length))
+                        foreach (Employee employee in department.Employees)
                         {
-                            employee.Salary = newSalary;
-                            employee.Position = newPosition;
+                            if (employee.No == no)
+                            {
+                                if (department.SalaryLimit >= newSalary + (department.CalcSalaryAverage() * department.Employees.Length))
+                                {
+                                    employee.Salary = newSalary;
+                                    employee.Position = newPosition;
+                                }
+                            }
+
                         }
+
                     }
+                    else
+                    {
+                        Console.WriteLine("Departmentde isci yoxdur. Once isci elave edin:");
+                    }
+                    
                 }
             }
         }
